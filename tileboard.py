@@ -78,10 +78,8 @@ class TileBoard(Board):
                 solvable = self.solvable(self.state_tuple())
             
             if force_state is not None:
-                
                 if not self.solvable(force_state):
                     raise ValueError("Specific forced puzzle configuration is not solvable!")
-                
                 list_index = 0
             
                 for i in range(self.boardsize):
@@ -100,8 +98,6 @@ class TileBoard(Board):
                 for column in range(self.boardsize):
                     self.place(row, column, self.board_representation[row][column])
                     
-    
-    
     
     
     
@@ -198,11 +194,14 @@ class TileBoard(Board):
         # Check if any of the 4 possible directions are valid to move.
         if self.row_of_none - 1 >= 0:
             list_of_actions.append([-1,0])
-        if self.row_of_none + 1 < 0:
+            
+        if self.row_of_none + 1 < self.boardsize:
             list_of_actions.append([1,0])
+            
         if self.column_of_none - 1 >= 0:
             list_of_actions.append([0,-1])
-        if self.column_of_none - 1 < 0:
+            
+        if self.column_of_none + 1 < self.boardsize:
             list_of_actions.append([0,1])    
         
         # Return a list of valid actions.
@@ -228,8 +227,12 @@ class TileBoard(Board):
 
         new_board.place(new_board.row_of_none, new_board.column_of_none, switch_value)
         new_board.board_representation[new_board.row_of_none][new_board.column_of_none] = switch_value
-    
+
+        new_board.row_of_none = self.row_of_none + row_offset
+        new_board.column_of_none = self.column_of_none + column_offset
         
+        #print("Row of None: ", self.row_of_none)
+        #print("Column of None: ", self.column_of_none)
         return new_board
         
     
