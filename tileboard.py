@@ -192,16 +192,16 @@ class TileBoard(Board):
         list_of_actions = []
         
         # Check if any of the 4 possible directions are valid to move.
-        if self.row_of_none - 1 >= 0:
+        if self.row_of_none - 1 >= 0: # Check if it can move up.
             list_of_actions.append([-1,0])
             
-        if self.row_of_none + 1 < self.boardsize:
+        if self.row_of_none + 1 < self.boardsize: # Check if it can move down.
             list_of_actions.append([1,0])
             
-        if self.column_of_none - 1 >= 0:
+        if self.column_of_none - 1 >= 0: # Check if it can move left.
             list_of_actions.append([0,-1])
             
-        if self.column_of_none + 1 < self.boardsize:
+        if self.column_of_none + 1 < self.boardsize: # Check if it can move right.
             list_of_actions.append([0,1])    
         
         # Return a list of valid actions.
@@ -219,35 +219,26 @@ class TileBoard(Board):
 
         new_board = copy.deepcopy(self) # Make a "deepcopy" of the "old" board.
     
-    
-        switch_value = new_board.get(new_board.row_of_none + row_offset, new_board.column_of_none + column_offset)
+        # All takes place on the new board, not the old one.  The old one is unchanged.
+        switch_value = new_board.get(new_board.row_of_none + row_offset, new_board.column_of_none + column_offset) 
         
+        # Place the None tile in the new position chosen from the valid moves list by the player.
         new_board.place(new_board.row_of_none + row_offset,new_board.column_of_none+column_offset, None)
         new_board.board_representation[new_board.row_of_none + row_offset][new_board.column_of_none + column_offset] = None
 
+        # Switch the None tile with the numbered one.
         new_board.place(new_board.row_of_none, new_board.column_of_none, switch_value)
         new_board.board_representation[new_board.row_of_none][new_board.column_of_none] = switch_value
 
-        new_board.row_of_none = self.row_of_none + row_offset
+        # Update the position in the new board.
+        new_board.row_of_none = self.row_of_none + row_offset 
         new_board.column_of_none = self.column_of_none + column_offset
-        
-        #print("Row of None: ", self.row_of_none)
-        #print("Column of None: ", self.column_of_none)
+    
         return new_board
-        
-    
-
-    
-    
-    
-    
-    
-    
 
         # Hint:  Be sure to use deepcopy
         #raise NotImplementedError("Return new TileBoard with action applied")
 
-    
     def solved(self):
         "solved - Is the puzzle solved?  Returns boolean"
         solved_variable = False
@@ -255,6 +246,5 @@ class TileBoard(Board):
             if self.__eq__(solution_tuple):
                 solved_variable = True
         return solved_variable
-    
-    
+        
         #raise NotImplementedError("Puzzle in solved state?")
